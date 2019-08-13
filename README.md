@@ -8,6 +8,5 @@ npm install
 ```
 npm run serve
 ```
-### hey
 See [Configuration Reference](https://cli.vuejs.org/config/).
 
