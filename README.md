@@ -1,4 +1,10 @@
 # Veux-and-vue
-Assessment\
-
-this the front of my work
+ this is a project which includes vuex integrated with vue as state manager
+ 
+## Project Setup
+```
+npm install
+```
+```
+npm run serve
+```
