@@ -60,4 +60,4 @@ To enable `VS Code + ESLint + prettier` do the following the steps:
 - Search and install _Prettier Code Formatter_
 - Restart VS Code.
 
-#### Enjoy! v 
+#### Enjoy! :v 
