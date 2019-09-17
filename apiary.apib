@@ -1,0 +1,771 @@
+FORMAT: 1A
+HOST: http://polls.apiblueprint.org/
+
+# Shuri-company API
+# SHURI-SCHOOL Api
+A set of requests and requirements that make up the api.<br>
+This is for shuri-Company Api platform.
+## Authentication
+This API uses company Query Parameter for its authentication.<br>
+The parameters that are needed to be sent for this type of authentication are as follows:
+`token` - API token from shuri admin to authorize request.
+# Group Registered company Data 
+## Company [/admin/company]
+
+### Call Logged in company data[GET /admin/company/current{?token,id,name,email}]
+Getting Resource related to company while entering his credentials and requesting for authentication.
++ Parameters
+    + token (`hgf876890iojds87fv9i0v0f897vf90djlvf09e8`)
+             **Company-token**: You can call school token from ShuriAdmin to login onto shuri-school.
+    + id: 124 (required, number) - ID given to company during school registeration in shuri admin.
+    + name: `school safety bus` - Name of company used when registering school in shuri admin.
+    + email: `safetybus@gmail.com`(required, string) - Company email used when registering school in shuri admin.
++ Request (application/json)
+
+    + Headers
+            
+            token:hgf876890iojds87fv9i0v0f897vf90djlvf09e8
+
++ Response 200 (application/json)
+   
+        [
+            {
+                message: "success",
+                user: {
+                    email: "safetybus@gmail.com",
+                    password: "shurisafety"
+                }
+            }
+        ]
++ Response 401 (application/json)
+
+        [
+            {
+                message: "Access Denied",
+                error: "Unauthorized"
+            }
+        ]
+### SCHOOL LOGIN [POST /admin/schools/auth]
+Sending Resource related to school while entering his credentials and requesting for login authentication.
++ Request (application/json)
+
+    + Attributes
+        + email: "safetybus@gmail.com" (required)
+        + password: "shurisafety" (required)
+
++ Response 200 (application/json)
+
+        [
+            {
+                message: "success",
+            }
+        ]
++ Response 201 (application/json)
+
+    + Headers
+
+            Location: /admin/company/auth
+
++ Response 404 (application/json)
+
+        [
+            {
+                message: "validation error",
+                error: {
+                    email: "Email is invalid"||"Email is required"||"Email/Password is incorrect" ||
+                    password: "Password is required"||"Email/Password is incorrect"
+                }
+            }
+#Group Company Relationship
+## Partnered  and Requested [/relationship]
+###Get all Partnered [GET /relationship/partnered]
+Getting Resource Related to Partnered schools as customers.
++ Response 200 (application/json)
+
+        [
+              {
+                id:"001",
+                name: "Lycee de Kigali",
+                logo: "3.png",
+                students: "898",
+                buses: "200"
+              },
+              {
+                id:"002",
+                name: "Kagarama High School",
+                logo: "4.png",
+                students: "898",
+                buses: "200"
+              },
+              {
+                id:"003",
+                name: "New Life College",
+                logo: "5.png",
+                students: "798",
+                buses: "200"
+             }
+        ]
+
+###Get all Requested [GET /relationship/requested]
+Getting Resource Related to Requested schools as customers.
++ Response 200 (application/json)
+
+            [
+                  {
+                    id:"001"
+                    name: "Mount Kenya University",
+                    logo: "1.png",
+                    students: "567"
+                  },
+                  {
+                    id:"002"
+                    name: "Adventist College of Rutwe",
+                    logo: "7.png",
+                    students: "1234"
+                  },
+                  {
+                    id:"003",
+                    name: "Nyamata High School",
+                    logo: "8.png",
+                    students: "898"
+                  },
+                  {
+                    id:"004",
+                    name: "Fille High School",
+                    logo: "2.png",
+                    students: "798"
+                  }
+            ]
+            
+
+###Allow Partner [POST /relationship/allowed]
+Resource related to confrimation of customers to be partnered.
+
++ Request (application/json)
+
+    + Attribute
+        + confrim:true
+
++ Response 200 (application/json)
+
+        [
+            {
+                message: "success"
+            }
+        ]
++ Response 201 (application/json)
+
+    + Headers
+
+            Location: /relationship/partnered
+
++ Response 404 (application/json)
+
+        [
+            {
+                message: "validation error"
+            }
+        ]
+###Not Now to Allow [POST /relationship/denied]
+Resource related to deny request of school request as customer.
+
++ Request (application/json)
+
+    + Attribute
+        + confrim:false
+
++ Response 200 (application/json)
+
+        [
+            {
+                message: "success"
+            }
+        ]
+
++ Response 201 (application/json)
+
+    + Headers
+
+            Location: /relationship/denied
+
++ Response 404 (application/json)
+
+        [
+            {
+                message: "validation error"
+            }
+        ]
+
+# Group Drivers
+##Create and Read Drivers [/drivers]
+###Create Drivers [POST /drivers]
+Resource related to registering new Driver.
++ Request (application/json)
+
+    + Attribute
+        + name:"Mucyo jean de Dieu"(required)
+        + phoneNumber:"+250780633340"(required)
+        + Gender:"Male"(required)
+        + country:"Rwanda"(required)
+        + Brithday:"12/12/1999"(required)
+        + driverLiscence:"19999121273274"(required)
+        + profile:"driver.png"(required)
+        
++ Response 200 (application/json)
+
+        [
+            {
+                message: "success",
+                status: "driver successfully created"
+            }
+        ]
++ Response 201 (application/json)
+
+    + Headers 
+    
+            Location:/drivers
+
++ Response 400 (application/json)
+
+        [
+            {
+                message: "validation error",
+                error: {
+                    name: "name is required"||
+                    gender: "gender is required"||
+                    country: "country is required"||
+                    phoneNumber: "phoneNumber is required"||
+                    driverLiscence: "driverLiscence is required"||
+                    profile: "profile is required"||
+                    brithday:"brithday is required"
+                }
+            }
+        ]
+
++ Response 501 (application/json)
+
+        [
+            {
+                message: "driver could not be created",
+                error: "Delivery Failure"
+            }
+        ]
+
+###Get All Drivers [GET /drivers]
+Resource related to registered drivers.
+
++ Response 200 (application/json)
+
+            [
+               {
+                id:"001",
+                name: "Muhoza patrick",
+                profile: "7.jpg",
+                bus: {
+                  name: "Toyota caster",
+                  plate: " RAD 393 J"
+                },
+                status: "Paused",
+                phoneNumber: "07887757623",
+                country: "Rwanda",
+                trips: 30,
+                gender: "Male",
+                birthday: "12/06/1907",
+                drivingLiscence: "NYH09876543",
+                online: "12h30min"
+              },
+              {
+                id:"002",
+                name: "Mucyo emmy",
+                profile: "2.jpg",
+                bus: {
+                  name: "Toyota caster",
+                  plate: " RAB 378 H"
+                },
+                status: "Active",
+                phoneNumber: "0788535789",
+                country: "Mozambique",
+                trips: "76",
+                gender: "Female",
+                birthday: "12/06/1997",
+                drivingLiscence: "NYH09876543",
+                online: "12h30min"
+              },
+              {
+                id:"003",
+                name: "Habimana claude",
+                profile: "3.jpg",
+                bus: null,
+                status: "Paused",
+                phoneNumber: "0780622223",
+                country: "Congo",
+                trips: "21",
+                gender: "Female",
+                birthday: "12/06/1999",
+                drivingLiscence: "NYH09876543",
+                online: "12h30min"
+              }
+            ]
+###Driver Profile [GET /drivers{?id,name}]
+Resource related to driver detail as profile.
+
++ Parameters
+    + id:"001"(required,number) ~ You can get driver by his/her ID given during registeration as param. 
+    + name:"Muhoza patrick"(required,string) ~ You can get driver by his/her names given during registeration as param
+            
++ Response 200 (application/json)
+
+              {
+                id:"001",
+                name: "Muhoza patrick",
+                profile: "7.jpg",
+                bus: {
+                  name: "Toyota caster",
+                  plate: " RAD 393 J"
+                },
+                phoneNumber: "07887757623",
+                country: "Rwanda",
+                trips: 30,
+                gender: "Male",
+                birthday: "12/06/1907",
+                drivingLiscence: "NYH09876543",
+                online: "12h30min"
+              }
+
+###Stop Driver [POST /drivers/paused]
+Resource related to pause driver.
++ Request (application/json)
+
+    + Attributes
+         + pause:true(required)
++ Response 200 (application/json)
+
+        [
+            {
+                message: "Driver successfully Paused"
+            }
+        ]
+
++ Response 201 (application/json)
+
+    + Headers
+
+            Location: /drivers/paused
+
++ Response 404 (application/json)
+
+        [
+            {
+                message: "validation error"
+            }
+        ]
+###Active Driver [POST /drivers/active]
+Resource related to active driver.
++ Request (application/json)
+
+    + Attributes
+         + active:true(required)
+
++ Response 200 (application/json)
+
+        [
+            {
+                message: "Driver successfully Activated"
+            }
+        ]
+
++ Response 201 (application/json)
+
+    + Headers
+
+            Location: /drivers/active
+
++ Response 404 (application/json)
+
+        [
+            {
+                message: "validation error"
+            }
+        ]
+###Remove Bus [POST /drivers/remove]
+Resource related to remove bus from driver.
++ Request (application/json)
+
+    + Attributes
+         + remove:true(required)
+
++ Response 200 (application/json)
+
+        [
+            {
+                message: "Bus successfully Removed from driver"
+            }
+        ]
+
++ Response 201 (application/json)
+
+    + Headers
+
+            Location: /drivers/remove
+
++ Response 404 (application/json)
+
+        [
+            {
+                message: "validation error"
+            }
+        ]      
+###Add Bus [POST /drivers/bus/add]
+Resource related to add bus to driver.
++ Request (application/json)
+
+    + Attributes
+         + addBus:true(required)
+
++ Response 200 (application/json)
+
+        [
+            {
+                message: "Bus successfully added to driver"
+            }
+        ]
+
++ Response 201 (application/json)
+
+    + Headers
+
+            Location: /drivers/bus/add
+
++ Response 404 (application/json)
+
+        [
+            {
+                message: "validation error"
+            }
+        ] 
+###Change bus [POST /drivers/bus/change]
+Resource related to change bus of driver.
++ Request (application/json)
+
+    + Attributes
+         + changeBus:true(required)
+
++ Response 200 (application/json)
+
+        [
+            {
+                message: "Bus successfully changed"
+            }
+        ]
+
++ Response 201 (application/json)
+
+    + Headers
+
+            Location: /drivers/bus/change
+
++ Response 404 (application/json)
+
+        [
+            {
+                message: "validation error"
+            }
+        ] 
+        
+###Move Trash [POST /drivers/delete]
+Resource related to move driver to trash.
++ Request (application/json)
+
+    + Attributes
+         + delete:true(required)
+
++ Response 200 (application/json)
+
+        [
+            {
+                message: "Driver successfully delete"
+            }
+        ]
+
++ Response 201 (application/json)
+
+    + Headers
+
+            Location: /drivers/delete
+
++ Response 404 (application/json)
+
+        [
+            {
+                message: "validation error"
+            }
+        ]
+        
+
+#Group Buses
+##Creat and Read Buses [/buses]
+###Creat Bus [POST /buses]
+Resource related to registering new Bus.
++ Request (application/json)
+
+    + Attribute
+        name: "Toyota coaster"(required)
+        plate: "RAD 345 R"(required)
+        seat: "45"(required)
+        yellowcard: "193425467864346756"
+        
++ Response 200 (application/json)
+
+        [
+            {
+                message: "success",
+                status: "bus successfully created"
+            }
+        ]
++ Response 201 (application/json)
+
+    + Headers 
+    
+            Location:/buses
+
++ Response 400 (application/json)
+
+        [
+            {
+                message: "validation error",
+                error: {
+                    name: "name is required"||
+                    plate: "plate is required"||
+                    seat: "seat is required"||
+                    yellowcard: "yellowcard is required"
+                }
+            }
+        ]
+
++ Response 501 (application/json)
+
+        [
+            {
+                message: "bus could not be created",
+                error: "Delivery Failure"
+            }
+        ]
+
+###Get All Buses [GET /buses]
+Resource related to registered buses.
++ Response 200 (application/json)
+
+        [
+              {
+                id:"001",
+                name: "Toyota coaster",
+                plate: "RAD 345 R",
+                seat: "45",
+                partner: "Saint ignastius",
+                status: "Active",
+                driver: {
+                  status: "active",
+                  name: "Manzi Johnathan",
+                  profile: "2.jpg",
+                  duration: "2 weeks ago"
+                },
+                yellowcard: "193425467864346756"
+              },
+              {
+                id:"002",
+                name: "Iveco bus",
+                plate: "RAD 945 R",
+                seat: "40",
+                status: "Inactive",
+                partner: "Green hills",
+                driver: {
+                  status: "inactive"
+                },
+                latestDriver: 
+                  name: "Muhoza patrick",
+                  profile: "7.jpg",
+                  duration: "1 day ago"
+                },
+                yellowcard: "19789325434246756"
+              },
+        ]
+        
+###Bus Profile [GET /buses{?id,}]
+Resource related to bus details as profile.
++ Parameters
+    + id:"002"(required,number) ~ ID of bus given during registration.
+    
++ Response 200 (application/json)
+
+                {
+                    id:"002",
+                    name: "Iveco bus",
+                    plate: "RAD 945 R",
+                    seat: "40",
+                    status: "Inactive",
+                    partner: "Green hills",
+                    yellowcard: "193425467864346756"
+                }
+###Change Driver [POST /buses{?id,name,profile,phoneNumber}]
+Resource related to bus driver.
+
++ Parameters
+    + id:"001"(required,number)~ ID of current driver.
+    + name:"Manzi Johnathan""(required,string) ~ Names of current driver.
+    + profile: "2.jpg"(required) ~ Name of current driver profile.
+    + phoneNumber:"+2507885353176"(required,number) ~ phone number of current driver
++ Request 200 (application/json)
+    + Attributes
+    
+        + driver{
+                 name:"Mucyo Fred" ~ Name of new driver from whose assigned to bus driver list.
+                 phoneNumber:"+250788633340" ~ Phone number of new driver whose assigned to bus from driver list.
+                 profile:"driver.png" ~ driver profile whose assigned to bus from driver list.
+                }(required)
+          
++ Response 200 (application/json)
+
+        [
+            {
+                message: "success",
+                status: "driver successfully changed"
+            }
+        ]
++ Response 201 (application/json)
+
+    + Headers 
+    
+            Location:/buses
+
++ Response 400 (application/json)
+
+        [
+            {
+                message: "validation error",
+                error: {
+                    name: "name is required"||
+                    phoneNumber: "phoneNumber is required"||
+                    profile: "profile is required"
+                }
+            }
+        ]
+
++ Response 501 (application/json)
+
+        [
+            {
+                message: "driver could not be changed",
+                error: "Delivery Failure"
+            }
+        ]
+
+###Add Driver [POST /buses{?id,name,profile,bus}]
+Resource related to add driver on bus.
+
++ Parameters
+    + id:"001"(required,number)~ ID of selected latest driver.
+    + name:"Manzi Johnathan""(required,string) ~ Names of selected latest driver.
+    + profile: "2.jpg"(required) ~ Name of selected latest driver profile.
+    + bus:"Toyota coaster"(required,string) ~ bus name of selected latest driver.
++ Request 200 (application/json)
+    + Attributes
+    
+        + driver{
+                 name:"Mucyo Fred" ~ Name of new driver from whose assigned to bus driver list.
+                 phoneNumber:"+250788633340" ~ Phone number of new driver whose assigned to bus from driver list.
+                 profile:"driver.png" ~ driver profile whose assigned to bus from driver list.
+                }
+          
++ Response 200 (application/json)
+
+        [
+            {
+                message: "success",
+                status: "driver successfully added"
+            }
+        ]
++ Response 201 (application/json)
+
+    + Headers 
+    
+            Location:/buses
+
++ Response 400 (application/json)
+
+        [
+            {
+                message: "validation error",
+                error: {
+                    name: "name is required"||
+                    phoneNumber: "phoneNumber is required"||
+                    profile: "profile is required"
+                }
+            }
+        ]
+
++ Response 501 (application/json)
+
+        [
+            {
+                message: "driver could not be added",
+                error: "Delivery Failure"
+            }
+        ]
+
+###Remove Partner [POST /buses/unpartner]
+Resource related to remove partner from bus.
++ Request (application/json)
+
+    + Attributes
+         + remove:true(required)
+
++ Response 200 (application/json)
+
+        [
+            {
+                message: "Partner successfully removed"
+            }
+        ]
+
++ Response 201 (application/json)
+
+    + Headers
+
+            Location: /buses/unpartner
+
++ Response 404 (application/json)
+
+        [
+            {
+                message: "validation error"
+            }
+        ]
+
+###Move Trash [POST /buses/delete]
+Resource related to move bus to trash.
++ Request (application/json)
+
+    + Attributes
+         + delete:true(required)
+
++ Response 200 (application/json)
+
+        [
+            {
+                message: "Bus successfully delete"
+            }
+        ]
+
++ Response 201 (application/json)
+
+    + Headers
+
+            Location: /buses/delete
+
++ Response 404 (application/json)
+
+        [
+            {
+                message: "validation error"
+            }
+        ]
