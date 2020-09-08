@@ -1,8 +1,8 @@
-# Shuri-Admin
+# Template Ui
 
 ## Environment Integration
 
-The environment intergration of `Shuri-Admin` constitutes a bunch of flows compelled to get started, accordingly cited below:
+The environment intergration of `Template Ui` constitutes a bunch of flows compelled to get started, accordingly cited below:
 
 - Install `Vue CLI` for starters with `yarn` or `npm install -g @vue/cli`.
   (Supposedly `NodeJS` is already installed if not click [here](https://nodejs.org/) for further documentation or instructions on its installation.)
@@ -15,9 +15,7 @@ The environment intergration of `Shuri-Admin` constitutes a bunch of flows compe
 ## Clone the repository
 
 - Choose any directory for the cloning.
-- Clone with HTTPS `git clone https://gitlab.com/shuri-dev/shuri-admin.git` or
-- Clone with SSH `git clone git@gitlab.com:shuri-dev/shuri-admin.git`(Recommended).
-
+- git clone https://github.com/iradukunda1/Vue-Vuex-Project/
 ## Project Setup
 
 You are supposed to go in the root directory of the project(Open the cloned project folder).
